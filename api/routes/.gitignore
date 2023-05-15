@@ -1,0 +1,24 @@
+# Ignora la carpeta node_modules
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# Ignora archivos del sistema Mac 
+.DS_store
+
+# Ignora todos los archivos de texto
+*.txt
+
+# Ignora variables de entorno
+.env
+
+# Ignora archivos de configuración SASS
+.sass-cache
