@@ -10,6 +10,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+package-lock.*
 
 # Ignora archivos del sistema Mac 
 .DS_store
