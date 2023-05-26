@@ -2,18 +2,19 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 
+// Verify token valid
 const authMiddlerware = asyncHandler( async (req, res, next) =>{
     let token;
     if(req?.headers?.authorization?.startsWith('Bearer')){
         token = req.headers.authorization.split(' ') [1];
-        //console.log(token);
+        //console.log(`User's Token: ${token}`);
         try{
             if(token){
                 const decoded = jwt.verify(token, process.env.JWT_SECRET);
-                console.log('Admin ID(token): ', decoded);
+                console.log(`User's ID: ${decoded}`);
                 const user = await User.findById(decoded?.id);
                 req.user = user;
-                console.log("Admin Data: ", user);
+                console.log(`User's Data: ${user}`);
                 next();
             }
         }catch(error){
@@ -25,10 +26,10 @@ const authMiddlerware = asyncHandler( async (req, res, next) =>{
     }
 });
 
+// Verify if is Admin
 const isAdmin = asyncHandler(async (req, res, next) => {
-    // console.log('isAdmin: ', req.user);
     const{ email } = req.user;
-    console.log('admin email: ', email);
+    console.log(`User's email: ${email}`);
     const adminUser = await User.findOne({ email });
     if(adminUser.role !== 'admin') {
         throw new Error('You are not an Admin')
