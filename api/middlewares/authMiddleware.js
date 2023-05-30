@@ -11,7 +11,7 @@ const authMiddlerware = asyncHandler( async (req, res, next) =>{
         try{
             if(token){
                 const decoded = jwt.verify(token, process.env.JWT_SECRET);
-                console.log(`User's ID: ${decoded}`);
+                console.log(`User's ID: ${JSON.stringify(decoded)}`);
                 const user = await User.findById(decoded?.id);
                 req.user = user;
                 console.log(`User's Data: ${user}`);
