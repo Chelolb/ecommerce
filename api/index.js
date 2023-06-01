@@ -9,10 +9,9 @@ const morgan = require('morgan');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
 const authRouter = require ('./routes/authRoute');
 const productRouter = require ('./routes/productRoute');
+const blogRouter = require ('./routes/blogRoute');
 
 dbConnect();
-
-//https://www.youtube.com/watch?v=S6Yd5cPtXr4&list=PL0g02APOH8okXhOQLOLcB_nifs1U41im5
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,6 +20,7 @@ app.use(morgan('dev'));
 
 app.use('/api/user', authRouter);
 app.use('/api/product', productRouter);
+app.use('/api/blog', blogRouter);
 
 app.use(notFound);
 app.use(errorHandler);

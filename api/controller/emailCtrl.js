@@ -28,6 +28,3 @@ const sendEmail = asyncHandler ( async (data, req, res) => {
 });
 
 module.exports = sendEmail;
-
-//https://www.youtube.com/watch?v=Zr2pqmyCgTQ  (Use and config nodemailer)
-//https://www.youtube.com/watch?v=uVDq4VOBMNM ( Secure Password for app nodemailer)
