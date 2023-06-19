@@ -28,7 +28,7 @@ const updateBlog = asyncHandler ( async (req, res) => {
     }
 });
 
-// get blog
+// Get blog
 const getBlog = asyncHandler ( async (req, res) => {
     const { id } = req.params;
     validateMongodbId(id);

@@ -5,14 +5,19 @@ const { createProduct,
     getaProduct, 
     getAllProduct, 
     updateProduct, 
-    deleteProduct 
+    deleteProduct, 
+    addToWishlist
 } = require('../controller/productCtrl');
 
 
 router.post('/', authMiddlerware, isAdmin, createProduct);
 router.get('/:id', getaProduct);
+router.put('/wishlist', authMiddlerware, addToWishlist);
 router.put('/:id', authMiddlerware, isAdmin, updateProduct);
+
+
 router.delete('/:id', authMiddlerware, isAdmin, deleteProduct);
 router.get('/', getAllProduct);
+
 
 module.exports = router;

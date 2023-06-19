@@ -1,4 +1,5 @@
 const Product = require('../models/productModel');
+const User = require('../models/userModel');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 
@@ -103,4 +104,48 @@ const deleteProduct = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { createProduct, getaProduct, getAllProduct, updateProduct, deleteProduct };
+// Add to whishlist
+const addToWishlist = asyncHandler ( async (req, res) => {
+    const { _id } = req.user;
+    const { prodId } = req.body;
+    try{
+        const user = await User.findById(_id);
+        const allreadyadded = user.wishlist.find((id) => id.toString() === prodId);
+        if(allreadyadded) {
+            let user = await User.findByIdAndUpdate(
+                _id,
+                {
+                  $pull: { wishlist: prodId },
+                },
+                {
+                  new: true,
+                }
+              );
+              res.json(user);
+        }
+        else{
+            let user = await User.findByIdAndUpdate(
+                _id,
+                {
+                  $push: { wishlist: prodId },
+                },
+                {
+                  new: true,
+                }
+              );
+              res.json(user);
+        }
+    }
+    catch (error){
+        throw new Error (error);
+    }
+})
+
+module.exports = {
+    createProduct, 
+    getaProduct, 
+    getAllProduct, 
+    updateProduct, 
+    deleteProduct,
+    addToWishlist 
+};
