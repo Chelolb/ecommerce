@@ -139,7 +139,66 @@ const addToWishlist = asyncHandler ( async (req, res) => {
     catch (error){
         throw new Error (error);
     }
-})
+});
+
+// calculate the product's rating
+const rating = asyncHandler ( async (req, res) => {
+    const {_id } = req.user;
+    const { star, prodId, comment } = req.body;
+    try{
+        const product = await Product.findById(prodId);
+        let alreadyRated = product.ratings.find(
+            (userId) => userId.postedBy.toString() === _id.toString()
+        );
+        if(alreadyRated){
+            const updateRating = await Product.updateOne({
+                ratings: { $elemMatch: alreadyRated },
+            },
+            {
+                $set: { "ratings.$.star": star, "ratings.$.comment": comment },
+            },
+            {
+                new: true,
+            }
+            );
+        }
+        else{
+            const rateProduct = await Product.findByIdAndUpdate(
+                prodId,
+                {
+                    $push: {
+                        ratings: {
+                            star: star,
+                            postedBy: _id,
+                            comment: comment,
+                        },
+                    },
+                },
+                {
+                    new: true,
+                }
+            );
+        }
+
+        const getallrating = await Product.findById(prodId);
+        let totalRating = getallrating.ratings.length;
+        let ratingsum = getallrating.ratings
+            .map((item) => item.star)
+            .reduce((prev, curr) => prev + curr, 0);
+        let actualRating = Math.round(ratingsum/totalRating);
+        let finalproduct = await Product.findByIdAndUpdate(
+            prodId, 
+            { 
+                totalrating: actualRating,
+            }, 
+            { new: true }
+        )
+        res.json(finalproduct);
+    }
+    catch (error){
+        throw new Error(error);
+    }
+});
 
 module.exports = {
     createProduct, 
@@ -147,5 +206,6 @@ module.exports = {
     getAllProduct, 
     updateProduct, 
     deleteProduct,
-    addToWishlist 
+    addToWishlist,
+    rating 
 };

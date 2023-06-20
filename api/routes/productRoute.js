@@ -6,13 +6,15 @@ const { createProduct,
     getAllProduct, 
     updateProduct, 
     deleteProduct, 
-    addToWishlist
+    addToWishlist,
+    rating
 } = require('../controller/productCtrl');
 
 
 router.post('/', authMiddlerware, isAdmin, createProduct);
 router.get('/:id', getaProduct);
 router.put('/wishlist', authMiddlerware, addToWishlist);
+router.put('/rating', authMiddlerware, rating);
 router.put('/:id', authMiddlerware, isAdmin, updateProduct);
 
 
